@@ -6,10 +6,6 @@ pool:
   name: 'Default'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'  # Adjust Python version if necessary
-
 - script: |
     echo "Setting up PowerShell environment..."
     sudo apt-get install -y powershell  # Install PowerShell on Ubuntu agent
