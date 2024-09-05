@@ -15,7 +15,7 @@ steps:
     SourceFolder: '$(Build.Repository.LocalPath)'
     MachineNames: '20.84.103.163'
     AdminUserName: 'pavithrachandrasekar'
-    AdminPassword: '$(VM_PASSWORD)'  # Ensure this is correctly set in pipeline secrets
+    AdminPassword: 'AjithKumar@2907'  # Ensure this is correctly set in pipeline secrets
     TargetPath: 'C:\git'
     CleanTargetFolder: true
   displayName: 'Copy files to VM'
