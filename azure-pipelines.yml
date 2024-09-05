@@ -6,10 +6,16 @@ pool:
   name: 'Default'
 
 steps:
-- script: |
-    echo "Setting up PowerShell environment..."
-    sudo apt-get install -y powershell  # Install PowerShell on Ubuntu agent
-  displayName: 'Setup PowerShell'
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    scriptType: 'ps'
+    scriptPath: ''
+    scriptContent: |
+      # Your PowerShell commands here
+      Write-Host "Setting up PowerShell environment..."
+      # Example command: Copy-Item or other necessary commands
+  displayName: 'Run PowerShell script'
 
 - powershell: |
     $source = "$(Build.Repository.LocalPath)"
