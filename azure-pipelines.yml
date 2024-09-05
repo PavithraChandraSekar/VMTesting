@@ -1,21 +1,36 @@
 trigger:
-- main  # Adjust this to your branch name if different
+- main  # Adjust this to your branch name or remove if not needed
 
 pool:
-  name: 'Default'
+  vmImage: 'windows-latest'  # Use the appropriate agent pool
 
 steps:
-- script: |
-    echo "Starting file copy..."
-    echo "Test message" > $(Build.Repository.LocalPath)\test.txt
-  displayName: 'Create test file'
-
-- task: WindowsMachineFileCopy@2
+- task: UsePythonVersion@0
   inputs:
-    SourceFolder: '$(Build.Repository.LocalPath)'
-    MachineNames: '20.84.103.163'
-    AdminUserName: 'pavithrachandrasekar'
-    AdminPassword: 'AjithKumar'
-    TargetPath: 'C:\git'
-    CleanTargetFolder: true
+    versionSpec: '3.x'  # Adjust Python version if necessary
+
+- script: |
+    echo "Setting up PowerShell environment..."
+    sudo apt-get install -y powershell  # Install PowerShell on Ubuntu agent
+  displayName: 'Setup PowerShell'
+
+- powershell: |
+    $source = "$(Build.Repository.LocalPath)"
+    $destination = "\\20.84.103.163\C$\git"
+    $username = "pavithrachandrasekar"
+    $password = "$(VM_PASSWORD)"
+    
+    $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+    $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+    
+    # Test connection to the destination
+    Test-Connection -ComputerName 20.84.103.163 -Count 1 -ErrorAction Stop
+    
+    # Attempt to create PSDrive
+    New-PSDrive -Name "RemoteDrive" -PSProvider FileSystem -Root $destination -Credential $credential -Persist
+    
+    # Copy files
+    Copy-Item -Path $source -Destination $destination -Recurse -Credential $credential
   displayName: 'Copy files to VM'
+  env:
+    VM_PASSWORD: $(VM_PASSWORD)  # Pass VM password from pipeline variables
