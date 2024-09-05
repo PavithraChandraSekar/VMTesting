@@ -15,6 +15,7 @@ steps:
     SourceFolder: '$(Build.Repository.LocalPath)'
     MachineNames: '20.84.103.163'
     AdminUserName: 'pavithrachandrasekar'
+    AdminPassword: "AjithKumar@2907"
     TargetPath: 'C:\git'
     CleanTargetFolder: true
   displayName: 'Copy files to VM'
