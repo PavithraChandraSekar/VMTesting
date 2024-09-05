@@ -3,6 +3,7 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'  # Use the appropriate agent pool
+  name: 'Default'
 
 steps:
 - task: UsePythonVersion@0
