@@ -2,18 +2,20 @@ trigger:
 - main  # Adjust this to your branch name if different
 
 pool:
-  name: 'Default'  # Ensure this matches the name of your agent pool
+  name: 'Default'
 
 steps:
-- script: echo "Starting file copy to VM"
-  displayName: 'Log Start'
+- script: |
+    echo "Starting file copy..."
+    echo "Test message" > $(Build.Repository.LocalPath)\test.txt
+  displayName: 'Create test file'
 
 - task: WindowsMachineFileCopy@2
   inputs:
     SourceFolder: '$(Build.Repository.LocalPath)'
-    MachineNames: '20.84.103.163'  # Replace with your VM's IP address
-    AdminUserName: 'pavithrachandrasekar'  # Use the new username
-    AdminPassword: '$(VM_PASSWORD)'  # Store VM password in pipeline secrets
+    MachineNames: '20.84.103.163'
+    AdminUserName: 'pavithrachandrasekar'
+    AdminPassword: '$(VM_PASSWORD)'  # Ensure this is correctly set in pipeline secrets
     TargetPath: 'C:\git'
-    CleanTargetFolder: false
+    CleanTargetFolder: true
   displayName: 'Copy files to VM'
